@@ -32,6 +32,8 @@
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-full: 9999px;
+
+  --base-font-size: 14.5px;
 }
 
 [data-theme="dark"] {
@@ -57,7 +59,7 @@
 }
 
 html {
-  font-size: 14.5px;
+  font-size: var(--base-font-size);
 }
 
 /* Base resets */
@@ -129,6 +131,63 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+/* Zoom Controls */
+.zoom-controls {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  height: 34px;
+}
+
+.zoom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.zoom-btn:hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+
+.zoom-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.zoom-label-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding: 0 0.35rem;
+  cursor: pointer;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all 0.12s ease;
+}
+
+.zoom-label-btn:hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
 }
 
 .icon-btn {

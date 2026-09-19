@@ -1,4 +1,4 @@
-const CACHE_NAME = 'visus-converter-v2';
+const CACHE_NAME = 'visus-converter-v3';
 const ASSETS = [
   './',
   './index.html',

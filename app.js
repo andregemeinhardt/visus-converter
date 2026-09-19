@@ -48,6 +48,10 @@ const elements = {
   presetsContainer: document.getElementById('presets-list'),
   refTableBody: document.getElementById('ref-table-body'),
   themeToggle: document.getElementById('theme-toggle'),
+  zoomOutBtn: document.getElementById('zoom-out-btn'),
+  zoomInBtn: document.getElementById('zoom-in-btn'),
+  zoomResetBtn: document.getElementById('zoom-reset-btn'),
+  zoomValue: document.getElementById('zoom-value'),
   copyBtn: document.getElementById('copy-btn'),
   resetBtn: document.getElementById('reset-btn'),
   copyNotification: document.getElementById('copy-notification')
@@ -389,6 +393,69 @@ function applyTheme(theme) {
   }
 }
 
+// --------------------------------------------------------------------------
+// Zoom & Text Scaling
+// --------------------------------------------------------------------------
+
+const ZOOM_LEVELS = [
+  { label: '80%', size: '11.6px' },
+  { label: '90%', size: '13.0px' },
+  { label: '100%', size: '14.5px' },
+  { label: '110%', size: '16.0px' },
+  { label: '125%', size: '18.1px' },
+  { label: '140%', size: '20.3px' }
+];
+
+let currentZoomIndex = 2; // Default 100% (14.5px)
+
+function applyZoom(index) {
+  currentZoomIndex = Math.max(0, Math.min(ZOOM_LEVELS.length - 1, index));
+  localStorage.setItem('visus-zoom-index', currentZoomIndex.toString());
+  const zoom = ZOOM_LEVELS[currentZoomIndex];
+  document.documentElement.style.setProperty('--base-font-size', zoom.size);
+  
+  if (elements.zoomValue) {
+    elements.zoomValue.textContent = zoom.label;
+  }
+  if (elements.zoomOutBtn) {
+    elements.zoomOutBtn.disabled = currentZoomIndex === 0;
+  }
+  if (elements.zoomInBtn) {
+    elements.zoomInBtn.disabled = currentZoomIndex === ZOOM_LEVELS.length - 1;
+  }
+}
+
+function initZoomControls() {
+  const savedZoom = localStorage.getItem('visus-zoom-index');
+  if (savedZoom !== null && !isNaN(parseInt(savedZoom, 10))) {
+    currentZoomIndex = Math.max(0, Math.min(ZOOM_LEVELS.length - 1, parseInt(savedZoom, 10)));
+  }
+
+  applyZoom(currentZoomIndex);
+
+  if (elements.zoomOutBtn) {
+    elements.zoomOutBtn.addEventListener('click', () => {
+      if (currentZoomIndex > 0) {
+        applyZoom(currentZoomIndex - 1);
+      }
+    });
+  }
+
+  if (elements.zoomInBtn) {
+    elements.zoomInBtn.addEventListener('click', () => {
+      if (currentZoomIndex < ZOOM_LEVELS.length - 1) {
+        applyZoom(currentZoomIndex + 1);
+      }
+    });
+  }
+
+  if (elements.zoomResetBtn) {
+    elements.zoomResetBtn.addEventListener('click', () => {
+      applyZoom(2); // Reset to 100%
+    });
+  }
+}
+
 function initThemeToggle() {
   applyTheme(state.theme);
   if (elements.themeToggle) {
@@ -456,6 +523,7 @@ function registerPWA() {
 // --------------------------------------------------------------------------
 
 function initApp() {
+  initZoomControls();
   initThemeToggle();
   initPresets();
   initReferenceTable();
