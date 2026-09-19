@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Visus Converter - Visual Acuity Calculator</title>
+  <meta name="description" content="Instant visual acuity converter between Snellen (20/ft & 6/m), Decimal, Percentage, logMAR, and VAR.">
+  <meta name="theme-color" content="#0284c7">
+  
+  <!-- PWA & Mobile Web Capabilities -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Visus">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="app-branding">
+        <img src="icon.svg" alt="Visus Logo" class="app-logo">
+        <div class="app-title-group">
+          <h1>Visus Converter</h1>
+          <p>Instant Visual Acuity & Refraction Calculator</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Card -->
+    <main class="main-card">
+      
+      <!-- Input Grid -->
+      <div class="converter-grid">
+        
+        <!-- Snellen US (20 ft) -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label for="input-snellen-us" class="input-label">Snellen (US / 20 ft)</label>
+            <span class="input-tag">Feet</span>
+          </div>
+          <div class="field-wrapper">
+            <input type="text" id="input-snellen-us" class="visus-input" placeholder="20/20" autocomplete="off" spellcheck="false" inputmode="numeric">
+          </div>
+        </div>
+
+        <!-- Snellen Metric (6 m) -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label for="input-snellen-m" class="input-label">Snellen (Metric / 6 m)</label>
+            <span class="input-tag">Meters</span>
+          </div>
+          <div class="field-wrapper">
+            <input type="text" id="input-snellen-m" class="visus-input" placeholder="6/6" autocomplete="off" spellcheck="false" inputmode="numeric">
+          </div>
+        </div>
+
+        <!-- Decimal Visus -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label for="input-decimal" class="input-label">Decimal</label>
+            <span class="input-tag">Monoyer</span>
+          </div>
+          <div class="field-wrapper">
+            <input type="text" id="input-decimal" class="visus-input" placeholder="1.00" autocomplete="off" spellcheck="false" inputmode="decimal">
+          </div>
+        </div>
+
+        <!-- Percentage -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label for="input-percent" class="input-label">Percentage</label>
+            <span class="input-tag">% Visus</span>
+          </div>
+          <div class="field-wrapper">
+            <input type="text" id="input-percent" class="visus-input" placeholder="100%" autocomplete="off" spellcheck="false" inputmode="numeric">
+          </div>
+        </div>
+
+        <!-- logMAR -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label for="input-logmar" class="input-label">logMAR</label>
+            <span class="input-tag">Log Scale</span>
+          </div>
+          <div class="field-wrapper">
+            <input type="text" id="input-logmar" class="visus-input" placeholder="0.00" autocomplete="off" spellcheck="false" inputmode="text">
+          </div>
+        </div>
+
+        <!-- VAR (Visual Acuity Rating) -->
+        <div class="input-group">
+          <div class="input-label-row">
+            <label for="input-var" class="input-label">VAR (Rating)</label>
+            <span class="input-tag">100 - 50·log</span>
+          </div>
+          <div class="field-wrapper">
+            <input type="text" id="input-var" class="visus-input" placeholder="100" autocomplete="off" spellcheck="false" inputmode="numeric">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Chart Presets (Standard ETDRS / Snellen Lines) -->
+      <div class="presets-section">
+        <div class="presets-header">
+          <span class="presets-title">Standard Chart Lines</span>
+        </div>
+        <div id="presets-list" class="presets-scroll">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+
+      <!-- Acuity Status & Visual Gauge -->
+      <div class="status-panel">
+        <div class="status-header">
+          <span class="status-title">Clinical Category</span>
+          <span id="visus-classification" class="badge badge-emerald">Normal Vision (≥ 20/20)</span>
+        </div>
+        
+        <!-- Continuous Gauge Meter -->
+        <div class="meter-container">
+          <div id="meter-fill" class="meter-fill" style="width: 81.25%;"></div>
+          <div id="meter-marker" class="meter-marker" style="left: 81.25%;"></div>
+        </div>
+        <div class="meter-labels">
+          <span>Blindness (&lt; 20/200)</span>
+          <span>Moderate (20/60)</span>
+          <span>Driving (20/40)</span>
+          <span>Standard (20/20)</span>
+          <span>Superior (20/10)</span>
+        </div>
+
+        <!-- Additional Optical Insights -->
+        <div class="metrics-row">
+          <div class="metric-item">
+            <span class="metric-label">Resolution Angle (MAR)</span>
+            <span id="mar-value" class="metric-value">1.0' arc</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Spatial Frequency</span>
+            <span id="cpd-value" class="metric-value">30.0 cpd</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="actions-bar">
+        <button id="reset-btn" type="button" class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Reset (20/20)
+        </button>
+        <button id="copy-btn" type="button" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          Copy Summary
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Collapsible Reference Chart -->
+    <details class="details-section">
+      <summary class="details-summary">
+        <span>Clinical Acuity Reference Table (ETDRS)</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="table-responsive">
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Snellen (US)</th>
+              <th>Snellen (Metric)</th>
+              <th>Decimal</th>
+              <th>Percent</th>
+              <th>logMAR</th>
+              <th>VAR</th>
+            </tr>
+          </thead>
+          <tbody id="ref-table-body">
+            <!-- Populated dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <!-- Toast Notification -->
+    <div id="copy-notification" class="toast" role="alert">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Copied acuity summary to clipboard!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Visus Converter &bull; Runs offline on all devices &bull; PWA Installable</p>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
