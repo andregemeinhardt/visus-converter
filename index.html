@@ -30,19 +30,6 @@
         </div>
       </div>
       <div class="header-actions">
-        <!-- Zoom & Text Scale Stepper -->
-        <div class="zoom-controls" title="Adjust Text Size">
-          <button id="zoom-out-btn" class="zoom-btn" title="Make Smaller" aria-label="Decrease size">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <button id="zoom-reset-btn" class="zoom-label-btn" title="Click to reset to 100%" aria-label="Reset zoom to 100%">
-            <span id="zoom-value">100%</span>
-          </button>
-          <button id="zoom-in-btn" class="zoom-btn" title="Make Larger" aria-label="Increase size">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-
         <button id="theme-toggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
         </button>
@@ -213,7 +200,15 @@
 
     <!-- Footer -->
     <footer class="app-footer">
-      <p>Visus Converter &bull; Runs offline on all devices &bull; PWA Installable</p>
+      <div class="footer-controls">
+        <div class="zoom-controls-subtle" title="Adjust display scale">
+          <span class="zoom-caption">Scale</span>
+          <button id="zoom-out-btn" class="subtle-zoom-btn" title="Smaller" aria-label="Decrease size">A−</button>
+          <button id="zoom-reset-btn" class="subtle-zoom-btn subtle-zoom-reset" title="Reset" aria-label="Reset size"><span id="zoom-value">100%</span></button>
+          <button id="zoom-in-btn" class="subtle-zoom-btn" title="Larger" aria-label="Increase size">A+</button>
+        </div>
+      </div>
+      <p class="footer-info">Visus Converter &bull; Runs offline on all devices &bull; PWA Installable</p>
     </footer>
 
   </div>

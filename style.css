@@ -133,63 +133,6 @@ body {
   gap: 0.5rem;
 }
 
-/* Zoom Controls */
-.zoom-controls {
-  display: inline-flex;
-  align-items: center;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 2px;
-  height: 34px;
-}
-
-.zoom-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.12s ease;
-}
-
-.zoom-btn:hover {
-  background: var(--bg-surface-elevated);
-  color: var(--text-primary);
-}
-
-.zoom-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.zoom-label-btn {
-  background: transparent;
-  border: none;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  padding: 0 0.35rem;
-  cursor: pointer;
-  height: 28px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  transition: all 0.12s ease;
-}
-
-.zoom-label-btn:hover {
-  background: var(--bg-surface-elevated);
-  color: var(--text-primary);
-}
-
 .icon-btn {
   display: inline-flex;
   align-items: center;
@@ -633,8 +576,73 @@ body {
 
 /* Footer */
 .app-footer {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.footer-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-controls-subtle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+}
+
+.zoom-caption {
+  color: var(--text-muted);
+  margin-right: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.subtle-zoom-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.subtle-zoom-btn:hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+
+.subtle-zoom-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.subtle-zoom-reset {
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--text-muted);
-  margin-top: 0.5rem;
+}
+
+.subtle-zoom-reset:hover {
+  color: var(--brand-primary);
+}
+
+.footer-info {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
 }
