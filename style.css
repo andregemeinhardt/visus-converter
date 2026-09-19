@@ -195,6 +195,9 @@ body {
   .input-label {
     font-size: 0.7rem;
   }
+  .input-sublabel {
+    font-size: 0.6rem;
+  }
   .input-tag {
     font-size: 0.6rem;
     padding: 0.1rem 0.3rem;
@@ -225,14 +228,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.25rem;
 }
 
 .input-label {
+  display: flex;
+  flex-direction: column;
   font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+.input-sublabel {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .input-tag {
@@ -242,6 +256,8 @@ body {
   border-radius: var(--radius-sm);
   background: var(--bg-surface-elevated);
   color: var(--text-muted);
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .field-wrapper {
