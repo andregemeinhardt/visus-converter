@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>Visus Converter - Visual Acuity Calculator</title>
   <meta name="description" content="Instant visual acuity converter between Snellen (20/ft & 6/m), Decimal, Percentage, logMAR, and VAR.">
   <meta name="theme-color" content="#0284c7">
@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Visus">
   
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
   <div class="container">
@@ -200,19 +200,16 @@
 
     <!-- Footer -->
     <footer class="app-footer">
-      <div class="footer-controls">
-        <div class="zoom-controls-subtle" title="Adjust display scale">
-          <span class="zoom-caption">Scale</span>
-          <button id="zoom-out-btn" class="subtle-zoom-btn" title="Smaller" aria-label="Decrease size">A−</button>
-          <button id="zoom-reset-btn" class="subtle-zoom-btn subtle-zoom-reset" title="Reset" aria-label="Reset size"><span id="zoom-value">100%</span></button>
-          <button id="zoom-in-btn" class="subtle-zoom-btn" title="Larger" aria-label="Increase size">A+</button>
-        </div>
+      <div class="scale-selector" role="group" aria-label="Display Size">
+        <button type="button" class="scale-btn" data-scale="compact">Compact</button>
+        <button type="button" class="scale-btn active" data-scale="default">Default</button>
+        <button type="button" class="scale-btn" data-scale="large">Large</button>
       </div>
-      <p class="footer-info">Visus Converter &bull; Runs offline on all devices &bull; PWA Installable</p>
+      <p class="footer-info">Visus Converter &bull; Runs offline &bull; PWA Installable</p>
     </footer>
 
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

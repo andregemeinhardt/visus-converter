@@ -1,4 +1,4 @@
-const CACHE_NAME = 'visus-converter-v4';
+const CACHE_NAME = 'visus-converter-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -46,7 +46,7 @@ self.addEventListener('fetch', (event) => {
         return networkResponse;
       })
       .catch(() => {
-        return caches.match(event.request).then((cachedResponse) => {
+        return caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
           return cachedResponse || caches.match('./index.html');
         });
       })

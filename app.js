@@ -48,10 +48,6 @@ const elements = {
   presetsContainer: document.getElementById('presets-list'),
   refTableBody: document.getElementById('ref-table-body'),
   themeToggle: document.getElementById('theme-toggle'),
-  zoomOutBtn: document.getElementById('zoom-out-btn'),
-  zoomInBtn: document.getElementById('zoom-in-btn'),
-  zoomResetBtn: document.getElementById('zoom-reset-btn'),
-  zoomValue: document.getElementById('zoom-value'),
   copyBtn: document.getElementById('copy-btn'),
   resetBtn: document.getElementById('reset-btn'),
   copyNotification: document.getElementById('copy-notification')
@@ -394,66 +390,41 @@ function applyTheme(theme) {
 }
 
 // --------------------------------------------------------------------------
-// Zoom & Text Scaling
+// Display Size / Scale Selector
 // --------------------------------------------------------------------------
 
-const ZOOM_LEVELS = [
-  { label: '80%', size: '11.6px' },
-  { label: '90%', size: '13.0px' },
-  { label: '100%', size: '14.5px' },
-  { label: '110%', size: '16.0px' },
-  { label: '125%', size: '18.1px' },
-  { label: '140%', size: '20.3px' }
-];
+const SCALES = {
+  compact: '12px',
+  default: '14.5px',
+  large: '16.5px'
+};
 
-let currentZoomIndex = 2; // Default 100% (14.5px)
+function setScale(scaleKey) {
+  const size = SCALES[scaleKey] || SCALES.default;
+  document.documentElement.style.fontSize = size;
+  document.documentElement.style.setProperty('--base-font-size', size);
+  localStorage.setItem('visus-scale', scaleKey);
 
-function applyZoom(index) {
-  currentZoomIndex = Math.max(0, Math.min(ZOOM_LEVELS.length - 1, index));
-  localStorage.setItem('visus-zoom-index', currentZoomIndex.toString());
-  const zoom = ZOOM_LEVELS[currentZoomIndex];
-  document.documentElement.style.setProperty('--base-font-size', zoom.size);
-  
-  if (elements.zoomValue) {
-    elements.zoomValue.textContent = zoom.label;
-  }
-  if (elements.zoomOutBtn) {
-    elements.zoomOutBtn.disabled = currentZoomIndex === 0;
-  }
-  if (elements.zoomInBtn) {
-    elements.zoomInBtn.disabled = currentZoomIndex === ZOOM_LEVELS.length - 1;
-  }
+  const buttons = document.querySelectorAll('.scale-btn');
+  buttons.forEach(btn => {
+    if (btn.dataset.scale === scaleKey) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
 }
 
-function initZoomControls() {
-  const savedZoom = localStorage.getItem('visus-zoom-index');
-  if (savedZoom !== null && !isNaN(parseInt(savedZoom, 10))) {
-    currentZoomIndex = Math.max(0, Math.min(ZOOM_LEVELS.length - 1, parseInt(savedZoom, 10)));
-  }
+function initScaleSelector() {
+  const savedScale = localStorage.getItem('visus-scale') || 'default';
+  setScale(savedScale);
 
-  applyZoom(currentZoomIndex);
-
-  if (elements.zoomOutBtn) {
-    elements.zoomOutBtn.addEventListener('click', () => {
-      if (currentZoomIndex > 0) {
-        applyZoom(currentZoomIndex - 1);
-      }
+  const buttons = document.querySelectorAll('.scale-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setScale(btn.dataset.scale);
     });
-  }
-
-  if (elements.zoomInBtn) {
-    elements.zoomInBtn.addEventListener('click', () => {
-      if (currentZoomIndex < ZOOM_LEVELS.length - 1) {
-        applyZoom(currentZoomIndex + 1);
-      }
-    });
-  }
-
-  if (elements.zoomResetBtn) {
-    elements.zoomResetBtn.addEventListener('click', () => {
-      applyZoom(2); // Reset to 100%
-    });
-  }
+  });
 }
 
 function initThemeToggle() {
@@ -523,7 +494,7 @@ function registerPWA() {
 // --------------------------------------------------------------------------
 
 function initApp() {
-  initZoomControls();
+  initScaleSelector();
   initThemeToggle();
   initPresets();
   initReferenceTable();
