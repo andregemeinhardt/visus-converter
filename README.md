@@ -2,7 +2,7 @@
 
 A fast, minimalist, cross-platform visual acuity and refraction converter. Enter any notation and immediately see all the others in real-time.
 
-![Visus App Icon](icon.svg)
+<img src="icon.svg" width="128" alt="Visus App Icon">
 
 ---
 
