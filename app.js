@@ -50,7 +50,17 @@ const elements = {
   themeToggle: document.getElementById('theme-toggle'),
   copyBtn: document.getElementById('copy-btn'),
   resetBtn: document.getElementById('reset-btn'),
-  copyNotification: document.getElementById('copy-notification')
+  copyNotification: document.getElementById('copy-notification'),
+  
+  // Transposition UI
+  transPlusSph: document.getElementById('trans-plus-sph'),
+  transPlusCyl: document.getElementById('trans-plus-cyl'),
+  transPlusAxis: document.getElementById('trans-plus-axis'),
+  transMinusSph: document.getElementById('trans-minus-sph'),
+  transMinusCyl: document.getElementById('trans-minus-cyl'),
+  transMinusAxis: document.getElementById('trans-minus-axis'),
+  transClearBtn: document.getElementById('trans-clear-btn'),
+  transCopyBtn: document.getElementById('trans-copy-btn')
 };
 
 // --------------------------------------------------------------------------
@@ -476,6 +486,204 @@ function initResetButton() {
 }
 
 // --------------------------------------------------------------------------
+// Refraction Cylinder Transposition
+// --------------------------------------------------------------------------
+
+function formatDiopter(num) {
+  if (num === null || isNaN(num)) return '';
+  const rounded = Math.round(num * 100) / 100;
+  if (Object.is(rounded, -0) || Math.abs(rounded) < 0.001) return '0.00';
+  return (rounded > 0 ? '+' : '') + rounded.toFixed(2);
+}
+
+function transposeAxis(axis) {
+  if (axis === null || isNaN(axis)) return '';
+  let a = Math.round(axis);
+  a = ((a % 180) + 180) % 180;
+  if (a === 0) a = 180;
+  const newA = a <= 90 ? a + 90 : a - 90;
+  return `${newA}°`;
+}
+
+function parseDiopterVal(str) {
+  if (!str) return null;
+  const clean = str.trim().replace(',', '.');
+  if (clean === '' || clean === '+' || clean === '-') return null;
+  const val = parseFloat(clean);
+  return isNaN(val) ? null : val;
+}
+
+function parseAxisVal(str) {
+  if (!str) return null;
+  const clean = str.trim().replace('°', '').replace(',', '.');
+  if (clean === '') return null;
+  const val = parseFloat(clean);
+  if (isNaN(val)) return null;
+  let a = Math.round(val);
+  a = ((a % 180) + 180) % 180;
+  if (a === 0) a = 180;
+  return a;
+}
+
+function initTransposition() {
+  const pSph = elements.transPlusSph;
+  const pCyl = elements.transPlusCyl;
+  const pAx = elements.transPlusAxis;
+  const mSph = elements.transMinusSph;
+  const mCyl = elements.transMinusCyl;
+  const mAx = elements.transMinusAxis;
+
+  if (!pSph || !mSph) return;
+
+  let isUpdating = false;
+
+  function updateMinusFromPlus() {
+    if (isUpdating) return;
+    isUpdating = true;
+
+    const s = parseDiopterVal(pSph.value);
+    const c = parseDiopterVal(pCyl.value);
+    const a = parseAxisVal(pAx.value);
+
+    if (c !== null) {
+      const sVal = s !== null ? s : 0;
+      const cVal = Math.abs(c);
+      const newSph = sVal + cVal;
+      const newCyl = -cVal;
+      mSph.value = formatDiopter(newSph);
+      mCyl.value = formatDiopter(newCyl);
+    } else if (s === null && c === null) {
+      mSph.value = '';
+      mCyl.value = '';
+    } else {
+      mSph.value = '';
+      mCyl.value = '';
+    }
+
+    if (a !== null) {
+      mAx.value = transposeAxis(a);
+    } else if (pAx.value.trim() === '') {
+      mAx.value = '';
+    }
+
+    isUpdating = false;
+  }
+
+  function updatePlusFromMinus() {
+    if (isUpdating) return;
+    isUpdating = true;
+
+    const s = parseDiopterVal(mSph.value);
+    const c = parseDiopterVal(mCyl.value);
+    const a = parseAxisVal(mAx.value);
+
+    if (c !== null) {
+      const sVal = s !== null ? s : 0;
+      const cVal = -Math.abs(c);
+      const newSph = sVal + cVal;
+      const newCyl = Math.abs(cVal);
+      pSph.value = formatDiopter(newSph);
+      pCyl.value = formatDiopter(newCyl);
+    } else if (s === null && c === null) {
+      pSph.value = '';
+      pCyl.value = '';
+    } else {
+      pSph.value = '';
+      pCyl.value = '';
+    }
+
+    if (a !== null) {
+      pAx.value = transposeAxis(a);
+    } else if (mAx.value.trim() === '') {
+      pAx.value = '';
+    }
+
+    isUpdating = false;
+  }
+
+  // Input listeners
+  pSph.addEventListener('input', updateMinusFromPlus);
+  pCyl.addEventListener('input', updateMinusFromPlus);
+  pAx.addEventListener('input', updateMinusFromPlus);
+
+  mSph.addEventListener('input', updatePlusFromMinus);
+  mCyl.addEventListener('input', updatePlusFromMinus);
+  mAx.addEventListener('input', updatePlusFromMinus);
+
+  // Formatting on blur
+  pSph.addEventListener('blur', () => {
+    const s = parseDiopterVal(pSph.value);
+    if (s !== null) pSph.value = formatDiopter(s);
+  });
+  pCyl.addEventListener('blur', () => {
+    const c = parseDiopterVal(pCyl.value);
+    if (c !== null) pCyl.value = formatDiopter(Math.abs(c));
+  });
+  pAx.addEventListener('blur', () => {
+    const a = parseAxisVal(pAx.value);
+    if (a !== null) pAx.value = `${a}°`;
+  });
+
+  mSph.addEventListener('blur', () => {
+    const s = parseDiopterVal(mSph.value);
+    if (s !== null) mSph.value = formatDiopter(s);
+  });
+  mCyl.addEventListener('blur', () => {
+    const c = parseDiopterVal(mCyl.value);
+    if (c !== null) mCyl.value = formatDiopter(-Math.abs(c));
+  });
+  mAx.addEventListener('blur', () => {
+    const a = parseAxisVal(mAx.value);
+    if (a !== null) mAx.value = `${a}°`;
+  });
+
+  // Select all on focus
+  [pSph, pCyl, pAx, mSph, mCyl, mAx].forEach(inp => {
+    inp.addEventListener('focus', () => inp.select());
+  });
+
+  // Clear button
+  if (elements.transClearBtn) {
+    elements.transClearBtn.addEventListener('click', () => {
+      pSph.value = '';
+      pCyl.value = '';
+      pAx.value = '';
+      mSph.value = '';
+      mCyl.value = '';
+      mAx.value = '';
+    });
+  }
+
+  // Copy button
+  if (elements.transCopyBtn) {
+    elements.transCopyBtn.addEventListener('click', async () => {
+      const pS = pSph.value ? `${pSph.value} ` : '';
+      const pC = pCyl.value ? `${pCyl.value} ` : '';
+      const pA = pAx.value ? `x ${pAx.value}` : '';
+      const mS = mSph.value ? `${mSph.value} ` : '';
+      const mC = mCyl.value ? `${mCyl.value} ` : '';
+      const mA = mAx.value ? `x ${mAx.value}` : '';
+
+      if (!pS && !pC && !mS && !mC) return;
+
+      const text = `+Cyl: ${pS}${pC}${pA} ⇌ -Cyl: ${mS}${mC}${mA}`.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        showCopyToast();
+      } catch {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        showCopyToast();
+      }
+    });
+  }
+}
+
+// --------------------------------------------------------------------------
 // Service Worker Registration for PWA Offline Support
 // --------------------------------------------------------------------------
 
@@ -498,6 +706,7 @@ function initApp() {
   initThemeToggle();
   initPresets();
   initReferenceTable();
+  initTransposition();
   initCopyButton();
   initResetButton();
 

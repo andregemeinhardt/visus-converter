@@ -28,6 +28,9 @@ A fast, minimalist, cross-platform visual acuity and refraction converter. Enter
   - Minimum Angle of Resolution (MAR in arcmin) & Spatial frequency (cpd).
 - **Interactive Reference Chart**:
   - Full ETDRS step table with real-time row highlighting matching your current input.
+- **Refraction Cylinder Transposition (+ / − Cyl)**:
+  - Convert sphere, cylinder, and axis between plus cylinder and minus cylinder forms with real-time bidirectional calculation.
+  - One-click copy formatted refraction Rx.
 - **Cross-Platform & Offline Ready**:
   - Works on iOS, Android, macOS, Windows, Linux, and web browsers.
   - Progressive Web App (PWA) with Service Worker for 100% offline capability.
@@ -65,6 +68,7 @@ Then open `http://localhost:8080` in your browser.
 
 ## 📐 Mathematical Formulas
 
+### Visual Acuity Notations
 All notations pivot through canonical **Decimal Visus ($V$)**:
 
 | Notation | Value Formula | Inverse to Decimal ($V$) |
@@ -76,3 +80,11 @@ All notations pivot through canonical **Decimal Visus ($V$)**:
 | **VAR** | $100 - (50 \times \text{logMAR})$ | $\text{logMAR} = (100 - \text{VAR}) / 50$ |
 | **MAR** | $1 / V$ (arcminutes) | $V = 1 / \text{MAR}$ |
 | **Spatial Frequency** | $30 \times V$ (cycles per degree) | $V = \text{cpd} / 30$ |
+
+### Cylinder Transposition
+Converting between Plus Cylinder ($S_+, C_+, A_+$) and Minus Cylinder ($S_-, C_-, A_-$):
+- **New Sphere**: $S_{new} = S + C$
+- **New Cylinder**: $C_{new} = -C$
+- **New Axis**: $A_{new} = A \pm 90^\circ$ ($1^\circ \le A_{new} \le 180^\circ$)
+  - If $A \le 90^\circ \implies A_{new} = A + 90^\circ$
+  - If $A > 90^\circ \implies A_{new} = A - 90^\circ$
