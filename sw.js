@@ -1,11 +1,23 @@
-const CACHE_NAME = 'visus-converter-v7';
+const CACHE_NAME = 'visus-converter-v8';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './app.js',
   './manifest.json',
-  './icon.svg'
+  './favicon.ico',
+  './icon.svg',
+  './icons/favicon.ico',
+  './icons/favicon-16x16.png',
+  './icons/favicon-32x32.png',
+  './icons/favicon-48x48.png',
+  './icons/apple-touch-icon.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable-192.png',
+  './icons/icon-maskable-512.png',
+  './icons/icon.svg',
+  './icons/icon-maskable.svg'
 ];
 
 self.addEventListener('install', (event) => {
